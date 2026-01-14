@@ -8,3 +8,10 @@
 using Func = std::function<double(double, double)>;
 // Definition of the Exact Solution type: y = f(t)
 using ExactFunc = std::function<double(double)>;
+
+namespace ODEProblems {
+
+    // TEST PROBLEM: y' = y - t^2 + 1, y(0) = 0.5
+    // This is a standard test case.
+    
+    // The derivative function f(t, y)
