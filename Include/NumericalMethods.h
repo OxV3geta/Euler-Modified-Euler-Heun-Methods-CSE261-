@@ -9,3 +9,11 @@ struct DataPoint {
     double y_approx;
     double y_exact;
     double error;
+};
+
+class NumericalSolver {
+public:
+    // Euler Method: y_n+1 = y_n + h * f(t_n, y_n)
+    static std::vector<DataPoint> solveEuler(Func f, ExactFunc exact, double y0, double t0, double tend, double h);
+
+    // Heun's Method (Modified Euler): Predictor-Corrector approach
