@@ -14,3 +14,6 @@ int main() {
     double t0 = 0.0;
     double tend = 2.0;
     double h_default = 0.1;
+
+ // 2. RUN SIMULATION FOR CURVES (Visual Comparison)
+ std::cout << "Running simulations with h = " << h_default << "...\n";
