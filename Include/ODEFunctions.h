@@ -15,3 +15,6 @@ namespace ODEProblems {
     // This is a standard test case.
     
     // The derivative function f(t, y)
+    inline double test_derivative(double t, double y) {
+        return y - (t * t) + 1; 
+    }
