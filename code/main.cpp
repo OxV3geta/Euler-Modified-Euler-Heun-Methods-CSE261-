@@ -37,3 +37,26 @@ int main() {
     std::vector<std::pair<double, double>> eulerErrors;
     std::vector<std::pair<double, double>> heunErrors;
     std::vector<std::pair<double, double>> midErrors;
+
+    //part 3
+
+    for (double h : stepSizes) {
+        // Get results for this step size
+        auto e = NumericalSolver::solveEuler(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h);
+        auto he = NumericalSolver::solveHeun(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h);
+        auto m = NumericalSolver::solveMidpoint(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h);
+
+        // Calculate Global Error (Error at the final point)
+        eulerErrors.push_back({h, e.back().error});
+        heunErrors.push_back({h, he.back().error});
+        midErrors.push_back({h, m.back().error});
+    }
+
+    FileWriter::saveErrorAnalysis("error_analysis_euler.csv", eulerErrors);
+    FileWriter::saveErrorAnalysis("error_analysis_heun.csv", heunErrors);
+    FileWriter::saveErrorAnalysis("error_analysis_midpoint.csv", midErrors);
+
+    std::cout << "\nAll tasks completed successfully. Check CSV files for data.\n";
+
+    return 0;
+}
