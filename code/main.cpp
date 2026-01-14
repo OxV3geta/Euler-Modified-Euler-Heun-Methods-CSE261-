@@ -17,3 +17,7 @@ int main() {
 
  // 2. RUN SIMULATION FOR CURVES (Visual Comparison)
  std::cout << "Running simulations with h = " << h_default << "...\n";
+
+ auto eulerData = NumericalSolver::solveEuler(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
+ auto heunData = NumericalSolver::solveHeun(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
+ auto midData = NumericalSolver::solveMidpoint(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
