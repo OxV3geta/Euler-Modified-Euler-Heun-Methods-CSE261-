@@ -1,0 +1,171 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{graphicx}      % For inserting images
+\usepackage{amsmath}       % For math equations
+\usepackage{booktabs}      % For professional tables
+\usepackage{float}         % To force image placement
+\usepackage{hyperref}      % For clickable links
+\usepackage{caption}       % For caption formatting
+\usepackage{setspace}      % For better line spacing
+\usepackage{xcolor}        % For code coloring
+
+% --- Set Line Spacing for Readability ---
+\setstretch{1.15}
+
+% --- Title Page Info ---
+\title{
+    \textbf{CSE261: Numerical Methods Project Report} \\
+    \large \textit{Comparative Analysis of Numerical Solvers for ODEs: \\ Euler, Heun, and Midpoint Methods}
+}
+\author{Group C1}
+\date{\today}
+
+\begin{document}
+
+% --- Title Page ---
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    \Huge
+    \textbf{Numerical Analysis of ODEs}
+    
+    \vspace{0.5cm}
+    \LARGE
+    A Study on Accuracy and Convergence
+    
+    \vspace{1.5cm}
+    
+    \textbf{Course:} CSE261 -- Numerical Methods \\
+    \textbf{Section:} All Sections
+    
+    \vspace{1.5cm}
+    
+    \textbf{\Large Group Members}
+    
+    \vspace{0.5cm}
+    
+    \begin{table}[h]
+        \centering
+        \large
+        \begin{tabular}{ll}
+            \toprule
+            \textbf{Student Name} & \textbf{Student ID} \\
+            \midrule
+            Tarek Hossian & 2024100000382 \\
+            Nura Nusrat Jannat & 2024000000320 \\
+            Pritom Chowdhury & 2024000000007 \\
+            Muntaha Hasnat Prionty & 2024000000033 \\
+            Mesbah Uddin Molla & 2024000000105 \\
+            Sumaiya Akter Mim & 2024100000265 \\
+            Asifur Rahman Asif & 2024000000330 \\
+            Riyad Uz Zaman & 2024000000231 \\
+            Tawfiq Al Ibad & 2024000000068 \\
+            Mahjabeen Tur & 2024200000319 \\
+            \bottomrule
+        \end{tabular}
+    \end{table}
+    
+    \vfill
+    
+    \Large
+    \textbf{Department of Computer Science and Engineering} \\
+    SouthEast University
+    
+\end{titlepage}
+
+% --- Abstract ---
+\begin{abstract}
+    In the field of engineering and computer science, many real-world systems—from circuit simulations to population growth—are modeled using Ordinary Differential Equations (ODEs) that cannot be solved by hand. This project explores how computers approximate these solutions. We implemented three fundamental algorithms in C++: Euler’s Method, Heun’s Method, and the Midpoint Method. By testing these against a known mathematical function, we found that while Euler's method is easy to implement, it suffers from significant "drift" or error over time. In contrast, Heun's and Midpoint methods proved to be far more accurate, converging to the true solution much faster. This report details our implementation, visualizes the trajectory differences, and mathematically proves the stability of the higher-order methods.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% --- Content ---
+
+\section{Introduction}
+Mathematical modeling often leads to differential equations that describe how a system changes over time. While analytical methods (calculus) give us exact formulas, they often fail when equations become complex or non-linear. In these cases, numerical methods are essential.
+
+The goal of this project is to solve an Initial Value Problem (IVP) of the form:
+\begin{equation}
+    \frac{dy}{dt} = f(t, y), \quad y(t_0) = y_0
+\end{equation}
+We aim to step through time from $t_0$ to $t_{end}$, approximating the value of $y$ at each step. We specifically compare the **Euler Method** (a first-order approach) against two second-order approaches: **Heun's Method** and the **Midpoint Method**. By visualizing the results, we intend to demonstrate why "looking ahead" (as done in second-order methods) provides a massive advantage in accuracy.
+
+\section{Methodology and Theory}
+
+\subsection{Euler's Method: The Basic Approach}
+Euler's method is the most intuitive approach. It assumes that for a small time step $h$, the slope of the function remains constant. It essentially draws a straight tangent line and takes a step along it.
+\begin{equation}
+    y_{n+1} = y_n + h \cdot f(t_n, y_n)
+\end{equation}
+\textbf{The Problem:} Because curves actually change their slope continuously, Euler's method tends to drift away from the true path. It has a global error of $O(h)$, meaning if we halve the step size, the error only halves.
+
+\subsection{Heun's Method: Predictor-Corrector}
+Heun's method (or Modified Euler) tries to fix the drift problem. It makes a "guess" using Euler's method, looks at the slope at that new point, and then averages the two slopes to find a more accurate direction.
+\begin{itemize}
+    \item \textbf{Predict:} Estimate the next point: $\tilde{y}_{n+1} = y_n + h f(t_n, y_n)$
+    \item \textbf{Correct:} Average the slopes: $y_{n+1} = y_n + \frac{h}{2} [f(t_n, y_n) + f(t_{n+1}, \tilde{y}_{n+1})]$
+\end{itemize}
+This results in a much tighter accuracy with a global error of $O(h^2)$.
+
+\subsection{Midpoint Method}
+Similar to Heun's method, the Midpoint method tries to find a better slope. Instead of averaging, it calculates the slope at the halfway point of the time step ($t + h/2$) and uses that slope to take the full step.
+\begin{equation}
+    y_{n+1} = y_n + h \cdot f(t_n + \frac{h}{2}, y_n + \frac{h}{2}f(t_n, y_n))
+\end{equation}
+
+\section{Implementation Details}
+To ensure our comparison was fair, we built a modular C++ system. We utilized `std::vector` to store the large datasets and `std::ofstream` to export the results to CSV files for analysis in Excel. 
+
+The core of our code revolves around a loop that updates time $t$ by adding $h$ and updates $y$ using the specific formulas above. We also calculated the **Exact Solution** at every step to compute the `Global Error` ($|y_{exact} - y_{approx}|$).
+
+\section{Numerical Experiments}
+We tested our solvers on the following specific problem:
+\begin{itemize}
+    \item \textbf{ODE:} $y' = y - t^2 + 1$
+    \item \textbf{Domain:} $0 \le t \le 2$
+    \item \textbf{Initial Condition:} $y(0) = 0.5$
+    \item \textbf{Step Size:} $h = 0.1$
+\end{itemize}
+The exact solution, used for validation, is $y(t) = (t+1)^2 - 0.5 e^t$.
+
+\section{Results and Discussion}
+
+\subsection{Trajectory Analysis}
+The graph below visualizes the path taken by our Heun's Method code compared to the perfect mathematical solution.
+
+\begin{figure}[H]
+    \centering
+    % Ensure your file is named 'trajectory_plot.png' in Overleaf
+    \includegraphics[width=0.85\textwidth]{trajectory_plot.png}
+    \caption{Trajectory Comparison: Heun's Method vs. Exact Solution.}
+    \label{fig:trajectory}
+\end{figure}
+
+\textbf{Discussion:} As illustrated in Figure \ref{fig:trajectory}, the numerical approximation (Blue Line) and the exact solution (Orange Line) are nearly indistinguishable. This visual overlap is a strong indicator that Heun's method is successfully correcting the slope at each step. Unlike Euler's method, which typically flies off the curve as $t$ increases, Heun's method stays "on the rails," tracking the non-linear curve accurately.
+
+\subsection{Error Convergence Study}
+To prove the mathematical stability of our code, we analyzed how the error behaves as we make the step size ($h$) smaller. We tested $h = 0.2, 0.1, 0.05, 0.01$.
+
+\begin{figure}[H]
+    \centering
+    % Ensure your file is named 'error_plot.png' in Overleaf
+    \includegraphics[width=0.85\textwidth]{error_plot.png}
+    \caption{Convergence Analysis: Global Error vs. Step Size.}
+    \label{fig:error}
+\end{figure}
+
+\textbf{Discussion:} Figure \ref{fig:error} reveals a critical insight: as we move to the left on the X-axis (smaller step sizes), the error drops toward zero. The shape of this curve confirms the quadratic convergence $O(h^2)$. This means that if we cut our step size in half, our error doesn't just cut in half—it drops by a factor of four. This efficiency allows us to get high-precision results without needing an excessive amount of computational power.
+
+\section{Conclusion}
+This project demonstrated the practical differences between first-order and second-order numerical methods. While Euler's method is a useful educational tool for understanding the basics of discretization, our results show it is often too inaccurate for complex engineering problems. 
+
+By implementing Heun's and Midpoint methods, we observed that adding a simple "correction" step significantly reduces error. The convergence analysis confirmed that these methods are robust and reliable. For future applications involving ODEs, we would recommend Heun's method as it offers an excellent balance between computational speed and mathematical accuracy.
+
+\end{document}
