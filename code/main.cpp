@@ -21,3 +21,11 @@ int main() {
  auto eulerData = NumericalSolver::solveEuler(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
  auto heunData = NumericalSolver::solveHeun(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
  auto midData = NumericalSolver::solveMidpoint(ODEProblems::test_derivative, ODEProblems::test_exact, y0, t0, tend, h_default);
+
+
+  // 3. SAVE DATA FOR PLOTTING
+    // Ensure the 'results' folder exists or the path is correct
+    FileWriter::saveTrajectory("results_euler.csv", eulerData);
+    FileWriter::saveTrajectory("results_heun.csv", heunData);
+    FileWriter::saveTrajectory("results_midpoint.csv", midData);
+
