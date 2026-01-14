@@ -71,3 +71,50 @@ CSE261_Project/
 ├── results/                # Output directory for CSV datasets
 ├── plots/                  # Generated plots (images) for the report
 └── README.md               # Documentation
+```
+---
+###🛠️ Build & Run Instructions
+
+This project separates header files (`include/`) from source logic (`src/`). Follow these steps to compile and run the simulation.
+
+### 1. Setup Output Directories
+Before running the solver, ensure the output directories exist so the program can save the CSV results and plots.
+
+**Linux / macOS:**
+```bash
+mkdir -p results plots
+```
+Windows (PowerShell / CMD):
+
+PowerShell
+```bash
+mkdir results
+mkdir plots
+```
+### . Compile the Code
+You must compile the source files and tell the compiler to look in the include folder for headers.
+Run the following command in your terminal:
+
+Bash
+```bash
+g++ code/main.cpp code/NumericalMethods.cpp code/FileWriter.cpp -I include -o ode_solver
+```
+Note: The -I include flag is crucial. It tells the compiler to look inside the include/ directory for NumericalMethods.h, ODEFunctions.h, and FileWriter.h.
+
+### 3. Run the Solver
+Once compiled, execute the program to generate the solution datasets.
+
+Linux / macOS:
+
+Bash
+```bash
+./ode_solver
+```
+Windows:
+
+PowerShell
+```bash
+.\ode_solver.exe
+```
+### 4. Check Results
+After execution, check the results/ folder. You should see the generated CSV files (e.g., euler_data.csv, heun_data.csv) ready for plotting.
