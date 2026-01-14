@@ -59,11 +59,11 @@ The codebase follows a strict **Separation of Concerns** principle to ensure mod
 
 ```text
 CSE261_Project/
-├── code/
+├── include/
 │   ├── NumericalMethods.h  # [Solver Engine] Declarations of numerical algorithms
 │   ├── ODEFunctions.h      # [Physics Engine] Definitions of the ODE and Exact solution
 │   └── FileWriter.h        # [I/O Utility] CSV export functionality
-├── src/
+├── code/
 │   ├── main.cpp            # [Controller] Simulation runner and parameter configuration
 │   ├── NumericalMethods.cpp# Implementation of Euler, Heun, and Midpoint logic
 │   └── FileWriter.cpp      # Implementation of file stream operations

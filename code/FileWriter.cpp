@@ -21,7 +21,7 @@ void FileWriter::saveTrajectory(const std::string& filename, const std::vector<D
     }
     file.close();
     std::cout << "Saved: " << filename << std::endl;
-
+}
 
 // Note: In NumericalMethods.h, the struct member was named 'error'. 
 // I used 'abs_error' above. Ensure the struct in header matches this usage.
