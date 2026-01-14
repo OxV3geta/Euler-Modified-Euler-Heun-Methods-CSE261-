@@ -23,7 +23,6 @@ void FileWriter::saveTrajectory(const std::string& filename, const std::vector<D
     std::cout << "Saved: " << filename << std::endl;
 }
 
-
 // Note: In NumericalMethods.h, the struct member was named 'error'. 
 // I used 'abs_error' above. Ensure the struct in header matches this usage.
 // Let's correct the loop above to use 'point.error':
@@ -43,4 +42,3 @@ void FileWriter::saveErrorAnalysis(const std::string& filename, const std::vecto
     file.close();
     std::cout << "Saved Error Analysis: " << filename << std::endl;
 }
-
