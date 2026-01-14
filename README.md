@@ -1,5 +1,4 @@
 # Euler-Modified-Euler-Heun-Methods-CSE261-
-# Numerical Analysis of ODEs: Euler & Heun Methods
 
 ![Language](https://img.shields.io/badge/Language-C++11-blue.svg)
 ![Course](https://img.shields.io/badge/Course-CSE261-green.svg)
